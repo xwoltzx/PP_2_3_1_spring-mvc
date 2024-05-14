@@ -3,10 +3,10 @@ package web.service;
 import org.springframework.stereotype.Service;
 import web.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import web.entity.User;
 
+import javax.validation.Validator;
 import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
@@ -39,7 +39,12 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void update(long id, User updateUser) {
-        userDao.update(id, updateUser);
+        User user = new User();
+        user.setId(id);
+        user.setAge(updateUser.getAge());
+        user.setName(updateUser.getName());
+        user.setEmail(updateUser.getEmail());
+        userDao.update(id, user);
     }
 
     @Override

@@ -1,15 +1,12 @@
 package web.dao;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import web.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
 @Repository
-@Component
 public class UserDAOImpl implements UserDAO{
     @PersistenceContext
     private EntityManager entityManager;
@@ -29,12 +26,8 @@ public class UserDAOImpl implements UserDAO{
     }
 
     public void update(long id, User updateUser) {
-
-        User user = entityManager.find(User.class, id);
-        user.setAge(updateUser.getAge());
-        user.setName(updateUser.getName());
-        user.setEmail(updateUser.getEmail());
-        entityManager.persist(user);
+        entityManager.find(User.class, id);
+        entityManager.merge(updateUser);
     }
 
     public void delete(long id) {

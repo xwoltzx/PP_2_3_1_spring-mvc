@@ -3,13 +3,12 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import web.entity.User;
 import web.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.Valid;
 
 @Controller
 public class UserController {
@@ -31,9 +30,13 @@ public class UserController {
         return "new";
     }
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String create(@ModelAttribute("user") User user) {
-        userService.save(user);
-        return "redirect:/users";
+    public String create(@ModelAttribute("user") @Valid User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "new";
+        } else {
+            userService.save(user);
+            return "redirect:/users";
+        }
     }
     @GetMapping("/edit")
     public String editUser(@RequestParam("id") Long id, Model model) {
@@ -42,9 +45,13 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateUser(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
-        userService.update(id, user);
-        return "redirect:/users";
+    public String updateUser(@RequestParam("id") Long id,@Valid @ModelAttribute("user") User user, BindingResult result) {
+        if (result.hasErrors()) {
+            return "edit";
+        } else {
+            userService.update(id, user);
+            return "redirect:/users";
+        }
     }
     @RequestMapping(value = "/del", method = RequestMethod.POST)
     public String deleteUser(@RequestParam("id") Long id, @ModelAttribute("user") User user) {
