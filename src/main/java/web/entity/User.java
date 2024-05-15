@@ -1,21 +1,14 @@
 package web.entity;
 
-import org.springframework.stereotype.Component;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Column;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Email;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
-@Component
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,11 +18,12 @@ public class User {
 
     @Column
     @NotEmpty
-    @Pattern(regexp = "^[\\p{L} .'-]+$")
+    @Pattern(regexp = "^[a-zA-Z]+$")
     private String name;
 
     @Column
     @Positive
+    @Max(value = 120)
     @NotNull
     private Integer age;
 
